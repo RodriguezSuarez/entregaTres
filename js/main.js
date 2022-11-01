@@ -51,6 +51,28 @@ renderizarProductos();
 //cargar carrito
 function agregarCarrito(productoComprar) {
   carrito.push(productoComprar);
+
+  //guardar en json y luego al localstorage
+  const jsonStorage = (clave, valor) => { localStorage.setItem(clave, valor)};
+  jsonStorage (`listaProductos`, JSON.stringify(productoComprar));
+  console.log(jsonStorage)
+  //traer del storage y luego al json
+  const storageJson= JSON.parse(localStorage.getItem(`listaProductos`));
+  console.log(storageJson);
+  
+  // //otra forma de aplicar json y storage
+  // //enviar objeto al JSON  
+  // const objetoAJSON = JSON.stringify(productoComprar);
+  // // console.log(objetoAJSON);
+  // //enviar objetoAJSON al localStorage  
+  // localStorage.setItem(`productoComprar`, objetoAJSON);
+  
+  // //traer del localStorage al JSON
+  // const traerDelLStorage = localStorage.getItem(`productoComprar`);
+  // //traer del JSON al objeto
+  // const jsonAObjeto = JSON.parse(traerDelLStorage);
+  // console.log(jsonAObjeto);
+
   //Sweet alert
   Swal.fire({
     imageUrl: `./images/${productoComprar.imagen}.jpg`,
@@ -82,27 +104,16 @@ function agregarCarrito(productoComprar) {
   `;
   let totalCarrito = carrito.reduce((acumulador, prod) => acumulador + prod.precio, 0);
     document.getElementById("totalPagar").innerText = `Total a pagar c/IVA incluido: $ ${totalCarrito * 1.21}`;
-  //enviar objeto al JSON  
-  const objetoAJSON = JSON.stringify(productoComprar);
-  // console.log(objetoAJSON);
-  //enviar objetoAJSON al localStorage  
-  localStorage.setItem(`productoComprar`, objetoAJSON);
 
-  //traer del localStorage al JSON
-  const traerDelLStorage = localStorage.getItem(`productoComprar`);
-  //traer del JSON al objeto
-  const jsonAObjeto = JSON.parse(traerDelLStorage);
-  console.log(jsonAObjeto);
+  // //evento para cada boton trash sacar del carrito
+  // productos.forEach((productoComprar) => {
+  //   document
+  //     .getElementById(`btn${productoComprar.id}`)
+  //     .addEventListener("click", function () {
+  //       sacarCarrito(productoComprar);
+  //     });
+  // });
 }
-
-// //evento para cada boton trash sacar del carrito
-// productos.forEach((productoComprar) => {
-//   document
-//     .getElementById(`btn${productoComprar.id}`)
-//     .addEventListener("click", function () {
-//       sacarCarrito(productoComprar);
-//     });
-// });
 
 btnFC.onclick = () => {
   carrito = [];
@@ -111,7 +122,6 @@ btnFC.onclick = () => {
   localStorage.clear();
   sessionStorage.clear();
   console.clear();
-
   //Sweet alert
   Swal.fire({
     imageUrl: `./images/logo.jpg`,
